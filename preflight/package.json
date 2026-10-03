@@ -1,0 +1,11 @@
+{
+  "name": "presage-preflight",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A causal readiness screen that runs before an uplift audit. The deployable app lives in app/.",
+  "scripts": {
+    "install:app": "npm install --prefix app",
+    "build": "npm --prefix app run build:web",
+    "dev": "npm --prefix app run dev"
+  }
+}

@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harshil Sojitra</title>
+<meta name="description" content="Harshil Sojitra, Management and Data Science student at TUM Campus Heilbronn. Prototypes, hackathon builds and company work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0b0d;
+    --raise: #111316;
+    --line: #1d2025;
+    --text: #ededee;
+    --soft: #a3a6ad;
+    --faint: #6b6f78;
+    --blue: #4a86f7;
+    --ease: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Geist", -apple-system, "Segoe UI", Arial, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: rgba(74, 134, 247, 0.35); }
+  a { color: inherit; text-decoration: none; }
+  .col { max-width: 660px; margin: 0 auto; padding: 0 24px; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-size: 12.5px; }
+
+  /* links: underline grows on hover */
+  .ln { color: var(--text); background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-repeat: no-repeat; background-position: 0 100%; transition: background-size 300ms var(--ease), color 200ms ease; }
+  .ln:hover { background-size: 100% 1px; }
+  .ln .ar { display: inline-block; color: var(--faint); transition: transform 300ms var(--ease), color 200ms ease; }
+  .ln:hover .ar { transform: translate(2px, -2px); color: var(--text); }
+
+  /* entry motion */
+  .in { opacity: 0; transform: translateY(8px); filter: blur(2px); animation: rise 900ms var(--ease) forwards; }
+  @keyframes rise { to { opacity: 1; transform: none; filter: none; } }
+  .d1 { animation-delay: 60ms; } .d2 { animation-delay: 140ms; } .d3 { animation-delay: 220ms; } .d4 { animation-delay: 300ms; } .d5 { animation-delay: 380ms; }
+
+  header { padding: 96px 0 0; }
+  .me { display: flex; align-items: center; gap: 14px; }
+  .me img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
+  .me .n { font-weight: 600; font-size: 16px; line-height: 1.3; }
+  .me .r { color: var(--faint); font-size: 14px; line-height: 1.3; }
+
+  .lead { font-size: 24px; line-height: 1.4; font-weight: 500; letter-spacing: -0.02em; margin: 48px 0 20px; }
+  .lead em { font-style: normal; color: var(--soft); }
+  .story { color: var(--soft); margin: 0 0 14px; }
+
+  .prize { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; margin: 18px 0 0; padding: 7px 14px 7px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: 13.5px; color: var(--soft); transition: border-color 200ms ease, color 200ms ease; }
+  .prize:hover { border-color: #2c3038; color: var(--text); }
+  .dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 3px rgba(74, 134, 247, 0.18); }
+
+  .contact { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 28px; font-size: 14.5px; }
+
+  section { padding: 88px 0 0; }
+  .label { color: var(--faint); font-size: 13.5px; margin: 0 0 14px; }
+
+  /* work list */
+  .list { border-top: 1px solid var(--line); }
+  .item { border-bottom: 1px solid var(--line); }
+  .row {
+    all: unset; box-sizing: border-box; cursor: pointer; width: 100%;
+    display: grid; grid-template-columns: 1fr auto; gap: 4px 20px; align-items: baseline;
+    padding: 18px 10px; margin: 0 -10px; width: calc(100% + 20px); border-radius: 10px;
+    transition: background-color 200ms ease;
+  }
+  .row:hover { background: var(--raise); }
+  .row:focus-visible { outline: 1px solid var(--blue); outline-offset: -1px; }
+  .row:active .t { transform: scale(0.99); }
+  .t { font-weight: 500; font-size: 15.5px; transition: transform 160ms var(--ease); display: inline-block; transform-origin: left center; }
+  .t .tag { color: var(--faint); font-weight: 400; margin-left: 8px; font-size: 13.5px; }
+  .s { grid-column: 1 / 2; color: var(--soft); font-size: 14.5px; }
+  .when { grid-row: 1 / 2; grid-column: 2 / 3; color: var(--faint); display: flex; align-items: center; gap: 12px; }
+  .plus { position: relative; width: 11px; height: 11px; display: inline-block; }
+  .plus::before, .plus::after { content: ""; position: absolute; left: 0; top: 5px; width: 11px; height: 1px; background: var(--faint); transition: transform 400ms var(--ease), background-color 200ms ease; }
+  .plus::after { transform: rotate(90deg); }
+  .row:hover .plus::before, .row:hover .plus::after { background: var(--text); }
+  .item.open .plus::after { transform: rotate(0deg); }
+
+  .panel { display: grid; grid-template-rows: 1fr; transition: grid-template-rows 500ms var(--ease); }
+  .js .panel { grid-template-rows: 0fr; }
+  .js .item.open .panel { grid-template-rows: 1fr; }
+  .panel > div { overflow: hidden; }
+  .inner { padding: 4px 0 28px; opacity: 1; transition: opacity 400ms var(--ease); }
+  .js .inner { opacity: 0; }
+  .js .item.open .inner { opacity: 1; transition-delay: 80ms; }
+  .inner img { display: block; width: 100%; border-radius: 10px; border: 1px solid var(--line); margin: 6px 0 22px; }
+  .inner dl { margin: 0; display: grid; grid-template-columns: 112px 1fr; gap: 12px 20px; font-size: 14.5px; }
+  .inner dt { color: var(--faint); }
+  .inner dd { margin: 0; color: var(--soft); }
+  .inner .links { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 18px; font-size: 14px; }
+  .inner .links span { color: var(--faint); }
+
+  /* habits */
+  .habits { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .habits li { display: grid; grid-template-columns: 40px 1fr; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .habits .k { color: var(--faint); }
+  .habits b { font-weight: 500; display: block; }
+  .habits span { color: var(--soft); font-size: 14.5px; }
+  .note { color: var(--soft); font-size: 14.5px; margin: 22px 0 0; }
+
+  footer { padding: 96px 0 72px; }
+  footer .end { border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; color: var(--faint); font-size: 13.5px; }
+
+  @media (max-width: 560px) {
+    header { padding-top: 56px; }
+    .lead { font-size: 21px; margin-top: 36px; }
+    section { padding-top: 64px; }
+    .row { grid-template-columns: 1fr auto; }
+    .t .tag { display: block; margin: 2px 0 0; }
+    .s { grid-column: 1 / -1; }
+    .inner dl { grid-template-columns: 1fr; gap: 2px; }
+    .inner dt { margin-top: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .in { animation: none; opacity: 1; transform: none; filter: none; }
+    .panel, .inner, .plus::before, .plus::after, .ln, .ln .ar, .t { transition: none; }
+  }
+</style>
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<header class="col">
+  <div class="me in">
+    <img src="assets/harshil.jpg" alt="Harshil Sojitra">
+    <div><div class="n">Harshil Sojitra</div><div class="r">Management and Data Science, TUM Heilbronn</div></div>
+  </div>
+
+  <p class="lead in d1">I build the first working version of a real problem, <em>and test it before anyone has to trust it.</em></p>
+  <p class="story in d2">I grew up in Rajkot, a manufacturing city in India, in a family where my father and grandfather built their own businesses. That is where I learned to judge an idea by whether a real business would use it.</p>
+  <p class="story in d2">I came to Germany to study at TUM. Since my first semester I have been building small tools for job applications, hackathons, a startup and a company challenge. I use AI coding tools as a build partner, and I can explain every part of what I ship.</p>
+
+  <a class="prize in d3" href="https://www.hs-heilbronn.de/de/smart-industry-solutions-hackathon"><span class="dot"></span>1st prize overall, Smart Industry Solutions Hackathon 2026</a>
+
+  <div class="contact in d4">
+    <a class="ln" href="mailto:Harshilsojitra1234@gmail.com">Email <span class="ar">&#8599;</span></a>
+    <a class="ln" href="https://www.linkedin.com/in/harshil-sojitra-81846b282">LinkedIn <span class="ar">&#8599;</span></a>
+    <a class="ln" href="https://github.com/harshilsojitra215-hue/portfolio">GitHub <span class="ar">&#8599;</span></a>
+  </div>
+</header>
+
+<main class="col">
+
+  <section class="in d5" id="work">
+    <p class="label">Work</p>
+    <div class="list">
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">VANTAGE<span class="tag">Hackathon, 1st prize</span></span><span class="when mono">Sep 2026 <i class="plus"></i></span><span class="s">Turns a free text request for an industrial part into the right product, or the one question to ask.</span></button>
+        <div class="panel"><div><div class="inner">
+          <img src="assets/vantage.jpg" alt="VANTAGE demo: check a customer's parts request" loading="lazy">
+          <dl>
+            <dt>Problem</dt><dd>Business customers ask a parts supplier for parts in their own words. A salesperson then searches a very large catalogue by hand.</dd>
+            <dt>What it does</dt><dd>It reads the request, finds candidates in the catalogue and checks the details it can verify. It proposes the product, asks one question when a detail is missing, or stops when the facts conflict.</dd>
+            <dt>AI decision</dt><dd>I tested two local language models as the reading step. The smaller one invented about 4 in 10 values, a larger one about 1 in 100, and a simple rule still found more right parts. So no model makes the decision, and the same request always gets the same answer.</dd>
+            <dt>My part</dt><dd>The matching engine and its evaluation, in Python. Built with Jeet Upadhyay, who built the interface, for the challenge set by Boie GmbH. Now applied to the Campus Founders Incubator.</dd>
+          </dl>
+          <div class="links"><a class="ln" href="https://vantage-incubator.pages.dev/">Live demo <span class="ar">&#8599;</span></a><a class="ln" href="https://www.hs-heilbronn.de/de/smart-industry-solutions-hackathon">Result on hs-heilbronn.de <span class="ar">&#8599;</span></a><span>Demo runs on synthetic data. Engine code private.</span></div>
+        </div></div></div>
+      </div>
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">die wegmeister<span class="tag">Company challenge</span></span><span class="when mono">Sep 2026 <i class="plus"></i></span><span class="s">Backend for an engine that catches configuration errors in a map story product before it goes live.</span></button>
+        <div class="panel"><div><div class="inner">
+          <dl>
+            <dt>Problem</dt><dd>A wrong camera value or a broken reference can make a published map story look wrong without any error showing.</dd>
+            <dt>My part</dt><dd>The logging contract, which defines how each failure is recorded so it can be traced. I tested candidate rules on real sample content, dropped the ones that fired on valid content, and checked that failure logs cannot leak the auth token.</dd>
+            <dt>Setting</dt><dd>TUM Mittelstand Zukunftslab with die wegmeister GmbH, Stuttgart. Strapi, PostgreSQL, GraphQL, Next.js, Docker.</dd>
+          </dl>
+          <div class="links"><span>Company code, not public</span></div>
+        </div></div></div>
+      </div>
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">Storymap Console<span class="tag">Self initiated</span></span><span class="when mono">Aug 2026 <i class="plus"></i></span><span class="s">A map story editor with a live preview that never reloads, built for my die wegmeister application.</span></button>
+        <div class="panel"><div><div class="inner">
+          <img src="assets/storymap-console.jpg" alt="Storymap Console: content form and live 3D map preview" loading="lazy">
+          <dl>
+            <dt>Problem</dt><dd>The challenge asked how to cut Storymap creation from 5 hours to 30 minutes. My guess: most of the time goes into a check and fix loop around the map camera.</dd>
+            <dt>What I built</dt><dd>A split screen editor. "Use this view" takes the camera values straight from the map, and live checks catch wrong coordinates, missing alt text and empty translations before saving.</dd>
+            <dt>Result</dt><dd>81 consecutive edits with zero reloads.</dd>
+          </dl>
+          <div class="links"><a class="ln" href="https://storymap-console.vercel.app/">Live <span class="ar">&#8599;</span></a><a class="ln" href="https://github.com/harshilsojitra215-hue/portfolio/tree/main/storymap-console">Code <span class="ar">&#8599;</span></a><span>Independent, public data</span></div>
+        </div></div></div>
+      </div>
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">Lab Bridge<span class="tag">Self initiated</span></span><span class="when mono">Sep 2026 <i class="plus"></i></span><span class="s">A sponsor map across twelve TUM Venture Labs, built for a working student application.</span></button>
+        <div class="panel"><div><div class="inner">
+          <img src="assets/lab-bridge.jpg" alt="Lab Bridge overview" loading="lazy">
+          <dl>
+            <dt>Problem</dt><dd>Twelve labs each find their own sponsors. A company already working with one lab is often an unused opening for another.</dd>
+            <dt>What I built</dt><dd>A map of 65 public partners against all twelve labs, with a ranked list of introductions that names the lab which could make each one. AI agents did the research and first pass scoring; every link goes back to its source.</dd>
+          </dl>
+          <div class="links"><a class="ln" href="https://lab-bridge-chi.vercel.app/">Live <span class="ar">&#8599;</span></a><a class="ln" href="https://github.com/harshilsojitra215-hue/portfolio/tree/main/lab-bridge">Code <span class="ar">&#8599;</span></a><span>Independent, public data</span></div>
+        </div></div></div>
+      </div>
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">Preflight<span class="tag">Self initiated</span></span><span class="when mono">Sep 2026 <i class="plus"></i></span><span class="s">Seven Python checks on whether customer data can support a causal estimate, before any model runs.</span></button>
+        <div class="panel"><div><div class="inner">
+          <img src="assets/preflight.jpg" alt="Preflight readiness screen" loading="lazy">
+          <dl>
+            <dt>Problem</dt><dd>Presage, a CRM startup, publishes fit criteria that check how much data a company has. None checks whether that data can show a causal effect at all.</dd>
+            <dt>What I built</dt><dd>Seven checks in Python and pandas. Each returns green, amber or red with a reason and a remedy, simple enough to verify by hand.</dd>
+          </dl>
+          <div class="links"><a class="ln" href="https://presage-preflight.vercel.app/">Live <span class="ar">&#8599;</span></a><a class="ln" href="https://github.com/harshilsojitra215-hue/portfolio/tree/main/preflight">Code <span class="ar">&#8599;</span></a><span>Independent, synthetic data</span></div>
+        </div></div></div>
+      </div>
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">The Opus<span class="tag">Hackathon</span></span><span class="when mono">Jul 2026 <i class="plus"></i></span><span class="s">A private marketplace where teams find and reuse their company's AI agents.</span></button>
+        <div class="panel"><div><div class="inner">
+          <img src="assets/the-opus.jpg" alt="The Opus landing page" loading="lazy">
+          <dl>
+            <dt>Problem</dt><dd>Inside a company, teams rebuild the same AI tools because nobody knows what already exists.</dd>
+            <dt>What we built</dt><dd>Describe a need in plain words, get matched to agents that already exist, and run one in a click.</dd>
+            <dt>My part</dt><dd>Shaping that flow, and keeping it small enough to ship live overnight. TechOn hackathon at TECH by Handelsblatt, with Jeet Upadhyay and Mehmet Adil Ozturk.</dd>
+          </dl>
+          <div class="links"><a class="ln" href="https://theopus.net/">theopus.net <span class="ar">&#8599;</span></a></div>
+        </div></div></div>
+      </div>
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">German Made Easy<span class="tag">Startup</span></span><span class="when mono">Since Feb 2026 <i class="plus"></i></span><span class="s">Exam prep for Gujarati students learning German. I lead partnerships and student communication.</span></button>
+        <div class="panel"><div><div class="inner">
+          <dl>
+            <dt>Exam packages</dt><dd>A1 packages with 615 reading questions, 800 listening questions, 154 writing tasks and a speaking set. Writing answers are scored by a Gemini Flash checker that has to pass a benchmark built on official Goethe graded answers.</dd>
+            <dt>Research system</dt><dd>A Python tool that prepares each B2B sales call, with 159 automated tests and every fact linked to its source. When one version failed a release check on 15 fresh accounts, I held it back.</dd>
+            <dt>Outreach</dt><dd>After a post mortem of a failed email round, one line first messages got 3 calls from 8, against 0 from 25 emails.</dd>
+          </dl>
+          <div class="links"><a class="ln" href="https://germanmadeeasy.in/">germanmadeeasy.in <span class="ar">&#8599;</span></a><span>Code private: data about real businesses</span></div>
+        </div></div></div>
+      </div>
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">EV spare parts forecasting<span class="tag">University, grade 1.7</span></span><span class="when mono">Jul 2026 <i class="plus"></i></span><span class="s">Why the most accurate forecast was about 8 times more expensive.</span></button>
+        <div class="panel"><div><div class="inner">
+          <dl>
+            <dt>Question</dt><dd>Can a forecast with low statistical error still create high inventory cost?</dd>
+            <dt>Finding</dt><dd>Across 24 parts and 78 weeks, the most accurate of five methods cost about 8 times more on the test weeks than a less accurate forecast with a safety buffer. Running out of a part costs far more than holding one extra.</dd>
+            <dt>Setting</dt><dd>Programming for Management Studies at TUM, group of five. I led forecasting. Python, pandas, scikit-learn.</dd>
+          </dl>
+        </div></div></div>
+      </div>
+
+      <div class="item">
+        <button class="row" aria-expanded="false"><span class="t">TUM Investment Club<span class="tag">Student club</span></span><span class="when mono">Apr 2026 <i class="plus"></i></span><span class="s">The member application form, the semester timetable and the selection rubric.</span></button>
+        <div class="panel"><div><div class="inner">
+          <img src="assets/tum-investment-calendar.jpg" alt="TUM Investment Heilbronn semester timeline" loading="lazy">
+          <dl>
+            <dt>What I built</dt><dd>Operations for a new student investment club: the application form, the timetable, and a rubric so selection ran on stated criteria.</dd>
+          </dl>
+          <div class="links"><a class="ln" href="https://tum-investment-club-heilbronn.netlify.app/">Application form <span class="ar">&#8599;</span></a><a class="ln" href="https://tum-investment-calendar-heilbronn.netlify.app/">Timetable <span class="ar">&#8599;</span></a></div>
+        </div></div></div>
+      </div>
+
+    </div>
+  </section>
+
+
+</main>
+
+<footer class="col">
+  <div class="end"><span>Harshil Sojitra, Heilbronn</span><span>Updated October 2026</span></div>
+</footer>
+
+<script>
+  document.querySelectorAll('.row').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var item = b.parentElement;
+      var open = item.classList.toggle('open');
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+</script>
+</body>
+</html>

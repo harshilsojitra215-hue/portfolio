@@ -1,0 +1,1395 @@
+/* Lab Bridge stylesheet.
+
+   The palette is the one TUM Venture Labs publishes in their own stylesheet
+   (tum-venture-labs.de/assets/styles.*.css): primary #3070B3 with its full scale, and the
+   twelve lab accents. No logo, no wordmark, no downloaded asset. This is an independent
+   prototype and it says so in the sidebar and in the header.
+
+   Rules: colour carries meaning and nothing else. One accent. A lab colour only ever means
+   that lab. No decorative gradient, no shadow doing work a border can do, no motion that is
+   not a direct response to a click. */
+
+:root {
+  /* Their primary scale, verbatim. */
+  --p50:  #ECF5FD;
+  --p100: #D5E7FB;
+  --p200: #ACCBEC;
+  --p300: #74A5D8;
+  --p400: #4885C5;
+  --p500: #3070B3;
+  --p600: #234B7F;
+  --p700: #1C3866;
+  --p800: #15254C;
+  --p900: #111D3C;
+  --p1000:#0B1328;
+
+  --ink: #0D0D0D;
+  --ink-2: #262626;
+  --muted: #666666;
+  --faint: #999999;
+  --rule: #E4EAF2;
+  --rule-soft: #EEF2F8;
+  --canvas: #F4F7FB;
+  --surface: #FFFFFF;
+
+  /* Meaning colours. */
+  --warn: #B8860B;
+  --warn-bg: #FDF7E7;
+  --warn-rule: #EBDCB4;
+  --ok: #1B7F4B;
+
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Gotham Screensmart is TUM Venture Labs’ own face and is not served here, so it renders
+     only on a machine that already has it. Jost is what everyone else sees. */
+  --display: "Gotham Screensmart", "Jost", var(--sans);
+
+  --sidebar: 236px;
+  --cell: 32px;
+  --r: 6px;
+  --r-sm: 4px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: var(--p600); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible { outline: 2px solid var(--p500); outline-offset: 2px; border-radius: 2px; }
+
+::selection { background: var(--p100); color: var(--p900); }
+
+/* Scrollbars in the brand's own grey-blue rather than the OS default, which on Windows is a
+   heavy light-grey bar that sits badly against a white panel. */
+* { scrollbar-width: thin; scrollbar-color: var(--p200) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--p200);
+  border-radius: 6px;
+  border: 3px solid var(--surface);
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--p300); }
+
+/* ═══════════════════════════════════════════════════════════════ motion
+
+   Rules, because motion is where a tool most easily stops looking like one.
+
+   Only transform and opacity are animated. Both are handled by the compositor, so nothing
+   here can cause a reflow while sixty-five rows and seven hundred and eighty cells are on
+   screen. Nothing animates width, height, top or left, and `transition: all` appears nowhere.
+
+   Nothing is triggered by scroll position. Scroll choreography belongs to pages that are
+   being read like a film; this is a grid someone is scanning for a company name, and content
+   that arrives as you reach it is content you cannot search. Everything below fires once, on
+   entering a view, and is over inside a quarter of a second. */
+
+/* backwards, not both. With `both` the final keyframe is retained as an animated value, so
+   .content kept a transform forever, and any transform other than none makes an element the
+   containing block for its position: fixed descendants. That silently reparented the matrix
+   tooltip, displacing it by the content origin and defeating its own edge clamping, which put
+   it up to 175px off the right of the screen. backwards holds the from-state before the
+   animation and hands the element back to its own styles afterwards. */
+.content { animation: view-in 190ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards; }
+
+/* Transform only, no fade, and the reason is worth stating.
+
+   An entrance that animates opacity from zero is invisible for as long as the animation has
+   not advanced, and an animation only advances when something is compositing frames. A tab in
+   the background, a print renderer, or the headless browser a chat client uses to unfurl a
+   link all produce a page that is technically correct and completely blank. For a URL whose
+   whole job is to be pasted into an email, that is the wrong failure.
+
+   Movement alone still reads as an entrance. If it never runs, the worst case is content
+   sitting six pixels low, which nobody will ever notice. */
+@keyframes view-in {
+  from { transform: translateY(6px); }
+  to   { transform: none; }
+}
+
+/* The six openings on the overview land in sequence. The stagger is small enough to read as
+   one movement with a direction rather than six separate arrivals. */
+.row.enter {
+  animation: row-in 240ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 32ms + 60ms);
+}
+
+@keyframes row-in {
+  from { transform: translateY(5px); }
+  to   { transform: none; }
+}
+
+/* Marks land column by column, left to right, so the first thing the grid does is show that
+   it is read across a row. Delay is keyed to the column only: keying it to the row as well
+   would run for two seconds on sixty-five of them. */
+.cell .mark {
+  animation: mark-in 220ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: calc(var(--col, 0) * 16ms + 80ms);
+}
+
+/* Scales from 0.55 rather than 0.4 so a frozen mark is still legible as a mark. */
+@keyframes mark-in {
+  from { transform: translate(-50%, -50%) scale(0.55); }
+  to   { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* The authored still state. Not "animations off": every element is placed exactly where the
+   motion would have left it, at full opacity, with no delay inherited from the stagger. A
+   reader who has asked their system to stop moving things loses nothing but the movement. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* These four begin invisible, so the animation has to be removed rather than shortened.
+     Collapsing a duration to 0.01ms leaves the animation running and still winning the
+     cascade, which pins the element to its from-state: opacity 0, marks at scale 0.4, an
+     entirely blank grid for anyone who asked for less motion. `animation: none` hands control
+     back to these declarations. */
+  .content,
+  .row.enter {
+    animation: none !important;
+    transform: none;
+  }
+  .cell .mark {
+    animation: none !important;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .drawer, .scrim { animation: none !important; opacity: 1; transform: none; }
+}
+
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; letter-spacing: -0.011em; }
+
+/* ═══════════════════════════════════════════════════════════════ shell */
+
+.shell { display: flex; min-height: 100vh; }
+
+.sidebar {
+  width: var(--sidebar);
+  flex: 0 0 var(--sidebar);
+  background: var(--p800);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 14px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; padding: 0 6px 20px; }
+
+.brand-mark {
+  width: 32px; height: 32px;
+  flex: none;
+  display: grid; place-items: center;
+  border-radius: var(--r-sm);
+  background: var(--p500);
+  color: #fff;
+}
+.brand-mark svg { width: 17px; height: 17px; }
+
+.brand-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.brand-text strong { font-family: var(--display); font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.brand-text span { font-size: 11px; color: var(--p200); }
+
+.nav { display: flex; flex-direction: column; gap: 1px; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  color: var(--p200);
+  font-size: 14px;
+  line-height: 1.2;
+  transition: background 90ms linear, color 90ms linear;
+}
+.nav-item svg { flex: none; width: 18px; height: 18px; opacity: 0.85; }
+.nav-label { flex: 1; min-width: 0; }
+.nav-item:hover { background: rgba(255, 255, 255, 0.07); color: #fff; }
+.nav-item[aria-current="true"] { background: var(--p600); color: #fff; font-weight: 500; }
+.nav-item[aria-current="true"] svg { opacity: 1; }
+
+.nav-count {
+  font-size: 11px;
+  color: var(--p300);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1px 7px;
+  min-width: 24px;
+  text-align: center;
+}
+.nav-item[aria-current="true"] .nav-count { background: rgba(255, 255, 255, 0.16); color: #fff; }
+
+.sidebar-foot {
+  margin: auto 0 0;
+  padding: 14px 8px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--p300);
+}
+
+/* ═══════════════════════════════════════════════════════════════ main */
+
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.topbar-title h1 { font-size: 22px; line-height: 1.2; }
+.crumb { display: block; font-size: 12.5px; color: var(--faint); margin-top: 2px; }
+
+.topbar-tools { display: flex; align-items: center; gap: 8px; }
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 10px;
+  width: 260px;
+  background: var(--canvas);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  color: var(--faint);
+}
+.search:focus-within { border-color: var(--p400); background: #fff; }
+.search input {
+  flex: 1; min-width: 0;
+  border: 0; background: none; outline: none;
+  font: inherit; font-size: 12.5px; color: var(--ink);
+}
+.search input::placeholder { color: var(--faint); }
+.search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 11px;
+  font-size: 12.5px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  background: #fff;
+  color: var(--ink-2);
+}
+.btn:hover { border-color: var(--p300); color: var(--p600); }
+.btn[aria-pressed="true"] { background: var(--p50); border-color: var(--p300); color: var(--p600); }
+
+.icon-btn {
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  border-radius: var(--r-sm);
+  color: var(--muted);
+}
+.icon-btn:hover { background: var(--canvas); color: var(--ink); }
+
+.content { padding: 22px 28px 64px; max-width: 1240px; width: 100%; }
+
+.link { color: var(--p600); font-size: 12.5px; font-weight: 500; }
+.link:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+.lede { margin: 0 0 20px; max-width: 58ch; font-size: 14px; color: var(--muted); line-height: 1.55; }
+.lede strong { color: var(--ink-2); font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════════════════ hero
+
+   The one place on the site that raises its voice.
+
+   Everything else is a tool and behaves like one. This is the first three seconds, and it has
+   to land the argument before a reader decides whether to keep going, so it gets the navy, the
+   size and the only italic in the stylesheet. It is still one sentence: the shouting is in the
+   typography, not in the word count. */
+
+.hero {
+  margin: -22px -28px 24px;
+  padding: 40px 28px 34px;
+  background: var(--p800);
+  color: #fff;
+  text-align: center;
+  animation: hero-in 420ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+
+@keyframes hero-in {
+  from { transform: translateY(10px); }
+  to   { transform: none; }
+}
+
+.hero-line {
+  margin: 0 auto 12px;
+  max-width: 22ch;
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.02em;
+}
+
+/* The turn in the argument, and the only italic anywhere. */
+.hero-line em {
+  font-style: italic;
+  color: var(--p300);
+}
+
+.hero-sub {
+  margin: 0 auto;
+  max-width: 62ch;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--p200);
+}
+
+.link.inline {
+  font-size: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--p200);
+}
+.link.inline:hover { text-decoration-color: var(--p500); }
+
+.hero-link { color: #fff; text-decoration-color: var(--p400); white-space: nowrap; }
+.hero-link:hover { text-decoration-color: #fff; }
+
+@media (max-width: 860px) {
+  .hero { margin: -16px -16px 18px; padding: 28px 18px 24px; }
+  .hero-line { font-size: 23px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════ kpis */
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.kpi {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 14px 16px 13px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.kpi::before {
+  content: "";
+  position: absolute; inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--rule);
+}
+.kpi.accent::before { background: var(--p500); }
+.kpi.warn::before { background: var(--warn); }
+
+.kpi-value {
+  font-family: var(--display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+}
+.kpi.accent .kpi-value { color: var(--p600); }
+.kpi.warn .kpi-value { color: var(--warn); }
+
+.kpi-label { font-size: 12.5px; font-weight: 500; color: var(--ink-2); margin-top: 5px; }
+.kpi-note { font-size: 11px; color: var(--faint); }
+
+/* ═══════════════════════════════════════════════════════════════ panel */
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.panel-head h2 { font-size: 17px; font-weight: 600; }
+
+.panel-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.panel-sub { font-size: 12.5px; color: var(--faint); line-height: 1.45; max-width: 62ch; }
+
+/* ═══════════════════════════════════════════════════════════════ rows */
+
+.table-head,
+.row {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.5fr) 96px minmax(130px, 1.1fr) minmax(150px, 1.2fr) 106px 78px 30px;
+  align-items: center;
+  gap: 14px;
+}
+
+.table-head.crosslab,
+.row.crosslab {
+  grid-template-columns: 34px minmax(170px, 1.1fr) 128px minmax(240px, 2fr) 150px 104px 30px;
+}
+
+.table-head {
+  padding: 0 16px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.rows {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.panel .rows { border: 0; border-radius: 0; }
+
+.row {
+  width: 100%;
+  padding: 10px 16px;
+  border-top: 1px solid var(--rule-soft);
+  transition: background 80ms linear;
+}
+.rows .row:first-child { border-top: 0; }
+.row:hover { background: var(--p50); }
+
+.row.overview { grid-template-columns: 1fr auto; gap: 20px; }
+.compact .row { padding: 9px 16px; }
+
+.cell-name { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
+.tile {
+  width: 28px; height: 28px;
+  flex: none;
+  display: grid; place-items: center;
+  border-radius: var(--r-sm);
+  background: var(--p50);
+  border: 1px solid var(--p100);
+  color: var(--p600);
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.tile.sm { width: 20px; height: 20px; font-size: 11px; border-radius: 3px; }
+.tile.lg { width: 42px; height: 42px; font-size: 14px; border-radius: var(--r); }
+
+.name-block { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+.name-block strong { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+.sub {
+  font-size: 12.5px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.row.overview .sub { -webkit-line-clamp: 2; max-width: 62ch; }
+
+.cell-type, .cell-sector { font-size: 12.5px; color: var(--muted); }
+.cell-sector { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.cell-why {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cell-labs, .cell-intro, .cell-target { display: flex; flex-wrap: wrap; gap: 4px; }
+
+.cell-move { display: flex; align-items: center; gap: 8px; flex: none; }
+.arrow { color: var(--p400); font-size: 14px; }
+
+.cell-action { color: var(--p200); display: grid; place-items: center; }
+.row:hover .cell-action { color: var(--p500); }
+
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.num strong { color: var(--p600); font-weight: 600; }
+.rank { font-size: 12.5px; color: var(--faint); }
+
+.empty {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12.5px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+}
+
+.tablefoot { margin: 10px 2px 0; font-size: 12.5px; color: var(--faint); max-width: 62ch; }
+
+/* labels ---------------------------------------------------------------- */
+
+.labtag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  background: var(--canvas);
+  border: 1px solid var(--rule);
+  color: var(--muted);
+}
+.labtag.confirmed { background: var(--p50); border-color: var(--p200); color: var(--p700); }
+.labtag.inferred { background: var(--warn-bg); border-color: var(--warn-rule); color: var(--warn); }
+.labtag.target { background: var(--p500); border-color: var(--p500); color: #fff; }
+
+.pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.55;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.pill.engaged { background: var(--p50); border-color: var(--p200); color: var(--p700); }
+.pill.indicative { background: var(--warn-bg); border-color: var(--warn-rule); color: var(--warn); }
+.pill.unattributed { background: var(--canvas); border-color: var(--rule); color: var(--faint); }
+
+.statepill {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.statepill.existing { background: var(--p600); color: #fff; }
+.statepill.strong_candidate { background: #fff; border-color: var(--p400); color: var(--p600); }
+.statepill.possible { background: var(--canvas); border-color: var(--rule); color: var(--faint); }
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  background: var(--canvas);
+  border: 1px solid var(--rule);
+  color: var(--muted);
+}
+
+/* review marker --------------------------------------------------------- */
+
+.marker {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--warn);
+  white-space: nowrap;
+  cursor: help;
+}
+.marker .dotmark {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--warn);
+  flex: none;
+}
+.marker.reviewed { color: var(--ok); }
+.marker.reviewed .dotmark { background: var(--ok); }
+
+/* ═══════════════════════════════════════════════════════════════ filters */
+
+.filterbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  padding: 11px 14px;
+  margin-bottom: 12px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+}
+.filter-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.filter-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-right: 2px;
+}
+
+.chip {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  border: 1px solid var(--rule);
+  background: #fff;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--p300); color: var(--p600); }
+.chip[aria-pressed="true"] { background: var(--p600); border-color: var(--p600); color: #fff; }
+
+/* ═══════════════════════════════════════════════════════════════ coverage */
+
+.coverage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); }
+
+/* The name track is minmax(0, 1fr), not minmax(150px, 1fr): at three columns the row is
+   narrower than its content wants and a floored track overflows into the next column
+   instead of letting the name ellipsis. */
+.cov {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) 48px max-content;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-top: 1px solid var(--rule-soft);
+  font-size: 12.5px;
+  min-width: 0;
+}
+.cov-dot { width: 8px; height: 8px; border-radius: 2px; }
+.cov-name { font-weight: 500; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cov-bar { height: 5px; border-radius: 3px; background: var(--rule-soft); overflow: hidden; }
+.cov-fill { display: block; height: 100%; border-radius: 3px; opacity: 0.85; }
+.cov-nums { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+.cov-nums strong { color: var(--ink); font-weight: 600; }
+.cov-sep { margin: 0 5px; color: var(--rule); }
+
+/* Matrix left at its own width, controls and key in a rail that stays put while the grid
+   scrolls, since the key is only useful where the marks are still on screen. */
+.coverage-layout {
+  display: grid;
+  /* max-content so the grid track is the table's natural width and the panel does not force
+     an internal scrollbar; minmax(0, …) so it can still give way rather than overflow the page
+     when the viewport is too narrow for both. */
+  grid-template-columns: minmax(0, max-content) minmax(210px, 268px);
+  gap: 16px;
+  align-items: start;
+}
+
+.cov-side {
+  position: sticky;
+  top: 86px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.cov-side-block {
+  padding: 12px 14px 13px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+}
+
+.cov-side-note {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--faint);
+}
+.cov-side-note strong { color: var(--ink-2); font-weight: 600; }
+
+.cov-side .legend { flex-direction: column; align-items: flex-start; gap: 7px; }
+.cov-side .filter-group { gap: 5px; }
+
+.legend { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+.legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--muted); }
+
+/* The swatches teach fill against outline, which is the actual encoding. Every mark in the
+   grid is drawn in its own lab's colour, so the legend is deliberately neutral and says so. */
+.sw { width: 11px; height: 11px; border-radius: 2px; flex: none; }
+.sw.solid { background: var(--p800); }
+.sw.hollow { background: #fff; border: 1.5px solid var(--p600); }
+.sw.faint { background: var(--p800); opacity: 0.18; }
+.sw.dotted { background: var(--warn); border-radius: 50%; width: 7px; height: 7px; }
+
+.legend-note { font-size: 11px; color: var(--faint); padding-left: 4px; border-left: 1px solid var(--rule); }
+
+/* ═══════════════════════════════════════════════════════════════ lab cards */
+
+.labgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(316px, 1fr)); gap: 12px; }
+
+.labcard {
+  position: relative;
+  transition: border-color 110ms linear;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 16px 14px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.lab-stripe { position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--lab, var(--p500)); }
+.labcard header { display: flex; align-items: center; gap: 8px; margin-bottom: 11px; }
+.labcard header h2 { flex: 1; font-size: 14px; letter-spacing: -0.012em; }
+.labcard header a { color: var(--faint); display: grid; place-items: center; }
+.labcard header a:hover { color: var(--p500); }
+
+.lab-nums { display: flex; gap: 22px; margin: 0 0 11px; }
+.lab-nums div { display: flex; flex-direction: column; }
+.lab-nums dt {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.lab-nums dd {
+  margin: 1px 0 0;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+}
+.lab-nums dd.hi { color: var(--p500); }
+
+.lab-domain {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lab-tech { list-style: none; display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 12px; padding: 0; }
+.lab-tech li {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--canvas);
+  border: 1px solid var(--rule);
+  color: var(--muted);
+}
+
+.lab-cands { margin-top: auto; padding-top: 11px; border-top: 1px solid var(--rule-soft); }
+.micro {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 6px;
+}
+.cand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 5px 5px 0;
+  padding: 3px 9px 3px 4px;
+  border-radius: 20px;
+  border: 1px solid var(--rule);
+  background: #fff;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+.cand:hover { border-color: var(--p300); background: var(--p50); color: var(--p700); }
+
+.outside {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px dashed var(--rule);
+  border-radius: var(--r);
+  max-width: 58ch;
+}
+.outside h3 { font-size: 14px; margin-bottom: 4px; }
+.outside p { margin: 0 0 6px; font-size: 12.5px; color: var(--muted); }
+.outside a { font-size: 12.5px; }
+
+/* ═══════════════════════════════════════════════════════════════ matrix */
+
+/* Shrink-wrapped, not stretched. A twelve-column grid in a full-width container leaves a wide
+   dead area on the right that reads as an unfinished layout; letting the panel take the width
+   of its own content makes the matrix a deliberate object on the page instead. */
+/* No width of its own: the grid track above is sized to the table's max-content, and a
+   fit-content width with a percentage max-width resolves against that same track, which
+   collapses the panel and puts a scrollbar inside a grid that already fits. */
+.matrix-wrap {
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  overflow: auto;
+  scrollbar-gutter: stable;
+  max-height: calc(100vh - 240px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--p200) transparent;
+}
+
+.matrix { border-collapse: separate; border-spacing: 0; font-size: 12.5px; }
+
+.matrix thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+  padding: 0;
+  vertical-align: bottom;
+}
+
+.corner {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  box-shadow: 6px 0 8px -8px rgba(11, 19, 40, 0.28);
+  width: 210px;
+  min-width: 210px;
+  text-align: left;
+  padding: 0 12px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: var(--faint);
+  border-right: 1px solid var(--rule);
+}
+
+.labhead { width: var(--cell); min-width: var(--cell); }
+.labhead-inner { height: 132px; display: flex; align-items: flex-end; justify-content: center; }
+.labhead-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  padding-bottom: 8px;
+  cursor: default;
+}
+
+.rowhead {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  box-shadow: 6px 0 8px -8px rgba(11, 19, 40, 0.28);
+  background: var(--surface);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 0;
+  font-weight: 400;
+  text-align: left;
+}
+.rowhead button {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 0 12px;
+  height: var(--cell);
+}
+/* Capped, or auto table layout widens the sponsor column to the longest name in the set and
+   pushes the grid past the space the rail leaves it. The few names that need it truncate; the
+   full name is in the tooltip and the record. */
+.rowname {
+  font-size: 12.5px;
+  color: var(--ink-2);
+  max-width: 186px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rowcount { font-size: 11px; color: var(--faint); flex: none; }
+.matrix tbody tr:hover .rowhead { background: var(--p50); }
+.matrix tbody tr:hover .rowname { color: var(--p700); }
+
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  position: relative;
+  border-bottom: 1px solid var(--rule-soft);
+  border-right: 1px solid var(--rule-soft);
+  padding: 0;
+  cursor: default;
+}
+.matrix tbody tr:hover .cell { background: rgba(48, 112, 179, 0.04); }
+
+.cell .mark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 15px; height: 15px;
+  border-radius: 2px;
+}
+.c-existing { cursor: pointer; }
+.c-existing .mark { background: var(--p800); }
+
+.c-strong_candidate { cursor: pointer; }
+.c-strong_candidate .mark { border: 1.5px solid var(--p600); background: #fff; }
+
+.c-possible { cursor: pointer; }
+.c-possible .mark { background: var(--p800); opacity: 0.18; }
+
+.c-no_fit .mark { display: none; }
+
+.cell .dot {
+  position: absolute;
+  top: 3px; right: 3px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--warn);
+}
+
+.tip {
+  position: fixed;
+  z-index: 60;
+  background: var(--p900);
+  color: #fff;
+  border-radius: var(--r-sm);
+  padding: 9px 11px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  pointer-events: none;
+  box-shadow: 0 6px 20px rgba(11, 19, 40, 0.28);
+}
+.tip-head { display: flex; align-items: center; gap: 6px; font-weight: 600; margin-bottom: 4px; }
+.tip-dot { width: 7px; height: 7px; border-radius: 2px; flex: none; }
+.tip p { margin: 0; color: var(--p100); }
+.tip-meta { margin-top: 5px; font-size: 11px; color: var(--p300); }
+
+/* ═══════════════════════════════════════════════════════════════ method */
+
+.steps { padding: 4px 0; }
+.step {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--rule-soft);
+}
+.steps .step:first-child { border-top: 0; }
+.step-n {
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--p50);
+  border: 1px solid var(--p200);
+  color: var(--p600);
+  font-size: 11px;
+  font-weight: 600;
+}
+.step-body { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
+.step-body strong { font-size: 14px; font-weight: 600; }
+.step-count {
+  font-size: 11px;
+  color: var(--p600);
+  background: var(--p50);
+  border-radius: 3px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.rules { margin: 0; padding: 12px 16px 4px 32px; }
+.rules li { font-size: 12.5px; color: var(--ink-2); margin-bottom: 6px; max-width: 58ch; }
+.rules li::marker { color: var(--p300); }
+
+.callout {
+  margin: 6px 16px 16px;
+  padding: 10px 13px;
+  background: var(--p50);
+  border-left: 3px solid var(--p500);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font-size: 12.5px;
+  color: var(--p700);
+  max-width: 58ch;
+}
+
+.limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.limit {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 13px 16px;
+  border-top: 1px solid var(--rule-soft);
+  border-right: 1px solid var(--rule-soft);
+}
+.limit strong { font-size: 12.5px; font-weight: 600; }
+.limit span { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+
+/* ═══════════════════════════════════════════════════════════════ drawer */
+
+.drawer-wrap { position: fixed; inset: 0; z-index: 80; display: flex; justify-content: flex-end; }
+
+.scrim {
+  position: absolute; inset: 0;
+  background: rgba(11, 19, 40, 0.32);
+  cursor: pointer;
+  animation: fade 120ms ease-out;
+}
+@keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+
+.drawer {
+  position: relative;
+  width: min(540px, 100%);
+  background: var(--surface);
+  border-left: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  animation: slide 150ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@keyframes slide { from { transform: translateX(16px); opacity: 0.6 } to { transform: none; opacity: 1 } }
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.drawer-title { flex: 1; min-width: 0; }
+.drawer-title h2 { font-size: 17px; line-height: 1.25; }
+.drawer-title .sub { display: flex; align-items: center; gap: 6px; margin-top: 3px; }
+
+.drawer-body { flex: 1; overflow-y: auto; padding: 16px; }
+
+.what { margin: 0 0 11px; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+
+.sectors { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; }
+
+.drawer-section { margin-bottom: 22px; }
+.drawer-section h3 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding-bottom: 7px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.drawer-section h3 .muted { text-transform: none; letter-spacing: 0; font-weight: 400; }
+
+.assoc { list-style: none; margin: 0; padding: 0; }
+.assoc li {
+  display: grid;
+  grid-template-columns: 8px auto auto 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 12.5px;
+}
+.assoc li:last-child { border-bottom: 0; }
+.assoc-dot { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+.conf {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.conf.confirmed { background: var(--p50); color: var(--p700); }
+.conf.inferred { background: var(--warn-bg); color: var(--warn); }
+
+.fits { list-style: none; margin: 0; padding: 0; }
+.fits li {
+  padding: 11px 0 11px 11px;
+  border-left: 2px solid var(--lab, var(--p200));
+  border-bottom: 1px solid var(--rule-soft);
+}
+.fits li:last-child { border-bottom: 0; }
+.fit-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 5px; }
+.fit-lab { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; }
+.fit-why { margin: 0 0 6px; font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+.fit-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.evidence { font-size: 11px; color: var(--faint); }
+
+.source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+  padding-top: 4px;
+  word-break: break-all;
+}
+.source:hover { color: var(--p600); }
+
+/* ═══════════════════════════════════════════════════════════════ utilities */
+
+.muted { color: var(--muted); }
+.faint { color: var(--faint); }
+.sm { font-size: 12.5px; }
+.hi { color: var(--p500); }
+
+/* ═══════════════════════════════════════════════════════════════ responsive */
+
+@media (max-width: 1180px) {
+  /* Not enough room for the rail beside the grid; it goes above, laid out across instead. */
+  .coverage-layout { grid-template-columns: 1fr; }
+  .cov-side { position: static; flex-direction: row; flex-wrap: wrap; order: -1; }
+  .cov-side-block { flex: 1 1 260px; }
+  .cov-side .legend { flex-direction: row; flex-wrap: wrap; gap: 14px; }
+}
+
+@media (max-width: 1100px) {
+  .table-head, .row { grid-template-columns: minmax(170px, 1.4fr) minmax(130px, 1fr) 104px 70px 30px; }
+  .table-head span:nth-child(2), .row .cell-type,
+  .table-head span:nth-child(3), .row .cell-sector { display: none; }
+  .table-head.crosslab, .row.crosslab { grid-template-columns: 30px minmax(150px, 1fr) 120px minmax(180px, 1.6fr) 30px; }
+  .table-head.crosslab span:nth-child(5), .row.crosslab .cell-intro,
+  .table-head.crosslab span:nth-child(6), .row.crosslab .marker { display: none; }
+}
+
+@media (max-width: 860px) {
+  .shell { flex-direction: column; }
+  .sidebar { width: 100%; flex: none; height: auto; position: static; padding: 12px; }
+  .brand { padding-bottom: 12px; }
+  .nav { flex-direction: row; overflow-x: auto; gap: 4px; }
+  .nav-item { flex: none; }
+  .nav-count { display: none; }
+  /* The sidebar collapses on a phone but this line does not get to collapse with it: the
+     page carries TUM Venture Labs’ name and their accent colours, and the statement that
+     it is unaffiliated is the reason that is acceptable. */
+  .sidebar-foot { margin: 10px 0 0; padding-top: 10px; font-size: 11px; }
+  .topbar { padding: 12px 16px; flex-wrap: wrap; }
+  .search { width: 100%; }
+  .content { padding: 16px 16px 48px; }
+
+  /* The two-column row has nowhere to go at this width: the name gets crushed and the
+     reasoning sentence, which is the point of the row, truncates to nothing. Stack it. */
+  .row.overview { grid-template-columns: 1fr; gap: 8px; }
+  .row.overview .sub { -webkit-line-clamp: 3; }
+  .cell-move { padding-left: 38px; }
+
+  .table-head { display: none; }
+  .row, .row.crosslab {
+    grid-template-columns: 1fr auto;
+    row-gap: 6px;
+    align-items: start;
+  }
+  .row .cell-labs, .row.crosslab .cell-why { grid-column: 1 / -1; }
+  .row.crosslab .num.rank { display: none; }
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .limit { border-right: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════ print */
+
+.print-note { display: none; }
+
+@media print {
+  body { background: #fff; }
+  .sidebar, .topbar-tools, .cell-action, .scrim { display: none !important; }
+
+  .print-note {
+    display: block;
+    margin-top: 18px;
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #555;
+    max-width: 90ch;
+  }
+  .shell { display: block; }
+  .topbar { position: static; border-bottom: 2px solid var(--p600); }
+  .content { padding: 0; max-width: none; }
+  .panel, .rows, .kpi, .labcard, .matrix-wrap { break-inside: avoid; border-color: #ccc; }
+  .matrix-wrap { max-height: none; overflow: visible; box-shadow: none; }
+  .row:hover { background: none; }
+
+  /* The key belongs on a printed grid; the controls that change it do not. */
+  .coverage-layout { display: block; }
+  .cov-side {
+    position: static;
+    flex-direction: row;
+    gap: 28px;
+    margin-bottom: 12px;
+  }
+  .cov-side .legend { flex-direction: row; gap: 16px; }
+  .cov-side .filter-group, .cov-side .micro { display: none; }
+  .rowhead, .corner { box-shadow: none; }
+}
+
+/* A lab card is a summary of a lab, and its accent already names which one. Hover lifts the
+   border to that accent rather than adding a shadow, so the hover state carries the same
+   meaning the stripe does. */
+.labcard:hover { border-color: var(--lab, var(--p300)); }
+
+/* The row tile is the only place a sponsor gets a visual identity, since no logos are used.
+   Warming it on hover ties the row to the record it opens. */
+.row:hover .tile { background: var(--p100); border-color: var(--p200); }
+.cand:hover .tile { background: #fff; }
+
+/* Alliance co-membership. Deliberately neither the blue of a confirmed relationship nor the
+   amber of an unverified one: it is a different kind of fact, not a weaker version of the
+   same one, and a reader should not be able to mistake it for either. */
+.labtag.alliance,
+.pill.alliance,
+.conf.alliance {
+  background: #F2F0FA;
+  border-color: #D9D2F0;
+  color: #5B3FA8;
+}
+
+/* ═══════════════════════════════════════════════════════════════ colophon */
+
+.colophon-body { padding: 14px 16px 16px; max-width: 58ch; }
+
+.colophon-body p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.colophon-body p strong { font-weight: 600; color: var(--ink); }
+
+.colophon-body h3 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 9px;
+}
+
+.week-one { margin: 0 0 16px; padding-left: 20px; }
+.week-one li {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.week-one li::marker { color: var(--p300); font-variant-numeric: tabular-nums; }
+
+.colophon-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-soft);
+}
+.colophon-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  font-size: 12.5px;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.colophon-links a:hover { border-color: var(--p300); background: var(--p50); color: var(--p700); }
+
+/* ═══════════════════════════════════════════════════════════════ kpi hierarchy
+
+   Four identical cards assert that four facts matter equally, which is the default a
+   dashboard falls into when nobody decides. One of these is the finding and the other three
+   are the scope it sits in, so the finding gets the wide track and the large numeral and the
+   rest step down to a supporting size. */
+
+.kpis { grid-template-columns: 1.5fr 1fr 1fr 1fr; }
+
+.kpis .kpi:first-child .kpi-value { font-size: 40px; letter-spacing: -0.028em; }
+.kpis .kpi:not(:first-child) .kpi-value { font-size: 22px; }
+.kpis .kpi:first-child .kpi-label { font-size: 14px; }
+
+@media (max-width: 1180px) {
+  .kpis { grid-template-columns: repeat(auto-fit, minmax(184px, 1fr)); }
+  .kpis .kpi:first-child .kpi-value { font-size: 22px; }
+  .kpis .kpi:first-child .kpi-label { font-size: 12.5px; }
+}
+
+/* Method has three counts of equal standing, so it keeps the even row. */
+.content .kpis:has(.kpi:nth-child(3):last-child) { grid-template-columns: repeat(3, 1fr); }
+.content .kpis:has(.kpi:nth-child(3):last-child) .kpi:first-child .kpi-value { font-size: 22px; }
+.content .kpis:has(.kpi:nth-child(3):last-child) .kpi:first-child .kpi-label { font-size: 12.5px; }
+
+/* An amber dot on 68 of 80 rows is not a warning, it is the background. The exceptional
+   state here is the row a person actually signed off, so that is the one that gets a mark. */
+.rows .marker:not(.reviewed) .dotmark { display: none; }
+.rows .marker:not(.reviewed) { color: var(--faint); }
+
+/* ═══════════════════════════════════════════════════════════════ matrix encoding
+
+   Hue is out of the cells and lives on the column head instead.
+
+   The legend teaches fill against outline: solid is a relationship that exists, hollow is a
+   lab that should have one. But every mark was also drawn in its lab's colour, and hue varies
+   far more loudly than fill does, so the encoding the legend explained was the one you could
+   not see. Twelve hues across seven hundred and eighty cells read as texture, not as meaning,
+   and the column position already says which lab a mark belongs to, so the colour was
+   repeating what the grid had said and drowning out what it had not.
+
+   It also removed a real accessibility failure. Built Environment's yellow measures 1.24:1
+   against white, so that column simply did not render; keeping hue only where it sits on a
+   3px rule under a label makes that survivable without altering anybody's brand colour. */
+
+.labhead-text { border-bottom: 3px solid var(--lab, var(--p300)); }
+
+/* Light lab colours need an edge to register at this size. A hairline ring costs nothing on
+   the dark accents and rescues the yellows, rather than changing the hex anyone published. */
+.cov-dot, .assoc-dot, .tip-dot { box-shadow: inset 0 0 0 1px rgba(13, 13, 13, 0.24); }
+.lab-stripe { box-shadow: inset 0 -1px 0 rgba(13, 13, 13, 0.18); }

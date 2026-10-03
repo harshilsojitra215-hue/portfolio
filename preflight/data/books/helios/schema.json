@@ -1,0 +1,68 @@
+{
+  "book_id": "helios",
+  "display_name": "Helios Fitness",
+  "sector": "Gym memberships",
+  "crm": "Klaviyo",
+  "n": 6500,
+  "history_years": 2.6,
+  "regime": "observational_targeting",
+  "regime_label": "Human targeting, no holdout",
+  "how_contact_was_decided": "Campaign managers picked save-campaign audiences by hand each month, leaning towards at-risk and higher-value members. No holdout was ever kept.",
+  "n_customers": 6500,
+  "schema": {
+    "tenure_months": "pre",
+    "monthly_value_eur": "pre",
+    "plan_tier": "pre",
+    "logins_last_90d": "pre",
+    "days_since_last_login": "pre",
+    "email_opens_last_180d": "pre",
+    "support_tickets_last_180d": "pre",
+    "payment_failures_last_365d": "pre",
+    "discount_active": "pre",
+    "nps_score": "pre",
+    "behavioural_events": "pre",
+    "churn_risk_score": "pre",
+    "contacted": "treatment",
+    "retained_180d": "outcome"
+  },
+  "feature_columns": [
+    "tenure_months",
+    "monthly_value_eur",
+    "plan_tier",
+    "logins_last_90d",
+    "days_since_last_login",
+    "email_opens_last_180d",
+    "support_tickets_last_180d",
+    "payment_failures_last_365d",
+    "discount_active",
+    "nps_score",
+    "behavioural_events",
+    "churn_risk_score"
+  ],
+  "post_treatment_columns": [],
+  "treatment_column": "contacted",
+  "outcome_column": "retained_180d",
+  "outcome_window_days": 180,
+  "ground_truth_columns": [
+    "true_p0",
+    "true_p1",
+    "true_tau",
+    "true_y0",
+    "true_y1",
+    "true_class"
+  ],
+  "economics": {
+    "contact_cost_eur": 12.0,
+    "retained_value_eur": 240.0,
+    "breakeven_uplift": 0.05
+  },
+  "treated_share": 0.5596923076923077,
+  "observed_retention_rate": 0.8923076923076924,
+  "true_ate": -0.017281618900135902,
+  "true_class_mix": {
+    "sure_thing": 3021,
+    "sleeping_dog": 1593,
+    "persuadable": 1015,
+    "lost_cause": 871
+  }
+}

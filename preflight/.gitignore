@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+node_modules/
+dist/
+*.tsbuildinfo
+.vercel/
+
+# Interview preparation. Personal notes, answers and self assessment.
+# Deliberately kept out of the repository.
+INTERVIEW/
+HANDOFF.md
+*.pptx
+
+# Verbatim copies of Presage's own site text and video captions.
+# Kept local: my notes on them are in the .md files, the raw copies are theirs.
+RESEARCH/_raw_*
