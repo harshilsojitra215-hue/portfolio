@@ -139,7 +139,7 @@
   </div>
 
   <p class="lead in d1">Most people apply with a CV. <em>I often apply with something that already works.</em></p>
-  <p class="story in d2">I study Management and Data Science at TUM in Heilbronn, and I sit between business and building. I can run the customer conversation, then build the tool that answers it.</p>
+  <p class="story in d2">I study Management and Data Science at TUM in Heilbronn, and I work where business meets technology. I can talk to the customer, then build the tool that solves their problem.</p>
   <p class="story in d2">I use AI to build fast. I test what it makes, and I only put my name on what I can explain.</p>
 
   <a class="prize in d3" href="https://www.hs-heilbronn.de/de/smart-industry-solutions-hackathon"><span class="dot"></span>1st prize overall, Smart Industry Solutions Hackathon 2026</a>
@@ -165,7 +165,8 @@
             <dt>Problem</dt><dd>Business customers ask a parts supplier for parts in their own words. A salesperson then searches a very large catalogue by hand.</dd>
             <dt>What it does</dt><dd>It reads the request, finds candidates in the catalogue and checks the details it can verify. It proposes the product, asks one question when a detail is missing, or stops when the facts conflict.</dd>
             <dt>AI decision</dt><dd>I tested two local language models as the reading step. The smaller one invented about 4 in 10 values, a larger one about 1 in 100, and a simple rule still found more right parts. So no model makes the decision, and the same request always gets the same answer.</dd>
-            <dt>My part</dt><dd>The matching engine and its evaluation, in Python. Built with Jeet Upadhyay, who built the interface, for the challenge set by Boie GmbH. Now applied to the Campus Founders Incubator.</dd>
+            <dt>My part</dt><dd>The matching engine and its evaluation, in Python. Built with Jeet Upadhyay, who built the interface, for the challenge set by Boie GmbH.</dd>
+            <dt>Next</dt><dd>Boie invited us on site in October to discuss an in-house version. We also applied to the Campus Founders Incubator.</dd>
           </dl>
           <div class="links"><a class="ln" href="https://vantage-incubator.pages.dev/">Live demo <span class="ar">&#8599;</span></a><a class="ln" href="https://www.hs-heilbronn.de/de/smart-industry-solutions-hackathon">Result on hs-heilbronn.de <span class="ar">&#8599;</span></a><span>Demo runs on synthetic data. Engine code private.</span></div>
         </div></div></div>
@@ -175,9 +176,9 @@
         <button class="row" aria-expanded="false"><span class="t">die wegmeister<span class="tag">Company challenge</span></span><span class="when mono">Sep 2026 <i class="plus"></i></span><span class="s">Backend for an engine that catches configuration errors in a map story product before it goes live.</span></button>
         <div class="panel"><div><div class="inner">
           <dl>
-            <dt>Problem</dt><dd>A wrong camera value or a broken reference can make a published map story look wrong without any error showing.</dd>
-            <dt>My part</dt><dd>The logging contract, which defines how each failure is recorded so it can be traced. I tested candidate rules on real sample content, dropped the ones that fired on valid content, and checked that failure logs cannot leak the auth token.</dd>
-            <dt>Setting</dt><dd>TUM Mittelstand Zukunftslab with die wegmeister GmbH, Stuttgart. Strapi, PostgreSQL, GraphQL, Next.js, Docker.</dd>
+            <dt>Problem</dt><dd>A small setting mistake can make a client's interactive map look wrong, and no error message shows it.</dd>
+            <dt>My part</dt><dd>I build an automatic check that finds these mistakes before clients see them. I defined how every error is logged so the team can trace it, and made sure logs never expose passwords or keys.</dd>
+            <dt>Tools</dt><dd>TypeScript, Next.js, Strapi, GraphQL, PostgreSQL, Docker, Bitbucket, ClickUp. TUM Mittelstand Zukunftslab with die wegmeister GmbH, Stuttgart.</dd>
           </dl>
           <div class="links"><span>Company code, not public</span></div>
         </div></div></div>
@@ -190,7 +191,7 @@
           <dl>
             <dt>Problem</dt><dd>The challenge asked how to cut Storymap creation from 5 hours to 30 minutes. My guess: most of the time goes into a check and fix loop around the map camera.</dd>
             <dt>What I built</dt><dd>A split screen editor. "Use this view" takes the camera values straight from the map, and live checks catch wrong coordinates, missing alt text and empty translations before saving.</dd>
-            <dt>Result</dt><dd>81 consecutive edits with zero reloads.</dd>
+            <dt>Result</dt><dd>81 consecutive edits with zero reloads. die wegmeister liked it, and it is now a reference in the challenge.</dd>
           </dl>
           <div class="links"><a class="ln" href="https://storymap-console.vercel.app/">Live <span class="ar">&#8599;</span></a><a class="ln" href="https://github.com/harshilsojitra215-hue/portfolio/tree/main/storymap-console">Code <span class="ar">&#8599;</span></a><span>Independent, public data</span></div>
         </div></div></div>
@@ -251,8 +252,9 @@
           <dl>
             <dt>Question</dt><dd>Can a forecast with low statistical error still create high inventory cost?</dd>
             <dt>Finding</dt><dd>Across 24 parts and 78 weeks, the most accurate of five methods cost about 8 times more on the test weeks than a less accurate forecast with a safety buffer. Running out of a part costs far more than holding one extra.</dd>
-            <dt>Setting</dt><dd>Programming for Management Studies at TUM, group of five. I led forecasting. Python, pandas, scikit-learn.</dd>
+            <dt>Setting</dt><dd>Programming for Management Studies at TUM, group of five. I led forecasting. Python, pandas, scikit-learn, Jupyter.</dd>
           </dl>
+          <div class="links"><a class="ln" href="https://github.com/harshilsojitra215-hue/portfolio/blob/main/ev-forecasting/ev_spare_parts_inventory_forecasting.ipynb">Notebook <span class="ar">&#8599;</span></a><span>Group project</span></div>
         </div></div></div>
       </div>
 
