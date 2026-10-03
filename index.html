@@ -328,7 +328,7 @@
         <h2 id="t-vantage">VANTAGE</h2>
         <span class="meta">Hackathon, Sep 2026</span>
       </div>
-      <p class="lede" data-r style="--d:2">A customer asks for a part in their own words. The supplier gets the right product back, or the one question to ask.</p>
+      <p class="lede" data-r style="--d:2">A customer asks for a part in their own words. The supplier gets the right product back, or the one question it needs to ask.</p>
 
       <figure class="shot" data-r>
         <img src="assets/vantage.jpg" width="1200" height="750" alt="VANTAGE demo screen: a field to check a customer's parts request, with examples for an exact match, a partial match and a stop">
@@ -337,26 +337,26 @@
       <div class="beats">
         <div class="beat" data-r>
           <h3>Why it matters</h3>
-          <p>Today a salesperson searches a very large catalogue by hand for every request. In parts sales, one wrong value means a wrong part shipped, so speed only helps if the answer can be trusted.</p>
+          <p>Today a salesperson searches a huge catalogue by hand for every request. One wrong detail means the wrong part gets shipped, so a fast answer only helps if it is right.</p>
         </div>
         <div class="beat" data-r style="--d:1">
           <h3>What it does</h3>
-          <p>It reads the request, finds candidates in the catalogue and checks the details it can verify. It proposes the product, asks one question when a detail is missing, or stops when the facts conflict.</p>
+          <p>It reads the request, looks for matching products and checks every detail it can. Then it suggests the product, asks one question if something is missing, or stops if the details contradict each other.</p>
         </div>
         <div class="beat" data-r style="--d:2">
           <h3>My part</h3>
-          <p>The matching engine and its evaluation, in Python. Built with Jeet Upadhyay, who built the interface, for the challenge set by Boie GmbH.</p>
+          <p>I built the matching logic in Python and tested how often it is right. Jeet Upadhyay built the screens. The challenge came from Boie GmbH, an industrial parts supplier.</p>
         </div>
       </div>
 
       <div class="decide">
         <div data-r>
-          <h3>Why no model decides</h3>
-          <p class="big">A model that guesses is worse than no model when a wrong part costs money. I tested two local language models as the reading step. The smaller one invented about 4 in 10 values, a larger one about 1 in 100, and a simple rule still found more right parts. So no model makes the decision, and the same request always gets the same answer. That is what lets a sales team rely on it.</p>
+          <h3>Why the AI does not decide</h3>
+          <p class="big">A guess is worse than no answer when a wrong part costs money. I tested two AI models for reading the requests. The smaller one made up about 4 in 10 details, like a size or a part number. The larger one made up about 1 in 100, and simple rules still found more right parts. So simple rules make the final choice, and the same request always gets the same answer. That is what lets a sales team trust it.</p>
         </div>
         <div class="beat" data-r style="--d:1">
           <h3>Next</h3>
-          <p>Boie invited us on site in October to discuss an in-house version.</p>
+          <p>Boie invited us to their site in October to talk about a version for their own systems.</p>
           <div class="act">
             <a class="ln" href="https://vantage-incubator.pages.dev/">Live demo<span class="ar" aria-hidden="true">&#8599;</span></a>
             <a class="ln" href="https://www.hs-heilbronn.de/de/smart-industry-solutions-hackathon">Result on hs-heilbronn.de<span class="ar" aria-hidden="true">&#8599;</span></a>
@@ -373,7 +373,7 @@
         <h2 id="t-storymap">Storymap Console</h2>
         <span class="meta">Self initiated, Aug 2026</span>
       </div>
-      <p class="lede" data-r style="--d:1">Editors see the real map while they write, and mistakes are caught before a story goes live. Built for my die wegmeister application.</p>
+      <p class="lede" data-r style="--d:1">Editors see the real map while they write, and mistakes are caught before a story goes live. Built to apply to die wegmeister, a company that makes interactive map stories.</p>
 
       <figure class="shot" data-r>
         <img src="assets/storymap-console.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="Storymap Console: the content form on the left and the live 3D map preview on the right">
@@ -382,15 +382,15 @@
       <div class="beats">
         <div class="beat" data-r>
           <h3>Why it matters</h3>
-          <p>The company wants a map story to take 30 minutes instead of 5 hours. My guess was that most of that time goes into checking and fixing the map camera, so that loop is what I went after.</p>
+          <p>The company wants one map story to take 30 minutes instead of 5 hours. I guessed that most of that time goes into moving the map, checking it and fixing it again, so that is the part I made faster.</p>
         </div>
         <div class="beat" data-r style="--d:1">
           <h3>What I built</h3>
-          <p>A split screen editor. "Use this view" takes the camera values straight from the map, and live checks catch wrong coordinates, missing alt text and empty translations before saving.</p>
+          <p>One screen with the text on the left and the live map on the right. One click copies the current map view into the story, and checks warn about wrong locations, missing image descriptions and empty translations before saving.</p>
         </div>
         <div class="beat" data-r style="--d:2">
           <h3>Result</h3>
-          <p><strong>81 consecutive edits with zero reloads.</strong> die wegmeister liked it, and it is now a reference in the challenge.</p>
+          <p><strong>81 edits in a row without reloading the page.</strong> die wegmeister liked it, and it is now a reference in the student challenge they run with TUM.</p>
         </div>
       </div>
 
@@ -408,7 +408,7 @@
         <h2 id="t-lab-bridge">Lab Bridge</h2>
         <span class="meta">Self initiated, Sep 2026</span>
       </div>
-      <p class="lede" data-r style="--d:1">Each TUM Venture Lab can start from sponsors the university already knows, instead of cold outreach. Built for a working student application.</p>
+      <p class="lede" data-r style="--d:1">Each of TUM&#39;s twelve Venture Labs can start from companies the university already knows, instead of cold emails. Built for a working student application.</p>
 
       <figure class="shot" data-r>
         <img src="assets/lab-bridge.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="Lab Bridge overview: sponsors mapped across twelve labs, with a ranked list of priority introductions">
@@ -417,11 +417,11 @@
       <div class="beats">
         <div class="beat" data-r>
           <h3>Why it matters</h3>
-          <p>Twelve labs each find their own sponsors. A company that already trusts one lab is a warm introduction for another, and today that opening often goes unused.</p>
+          <p>Each lab looks for sponsors on its own. A company that already works with one lab is an easy introduction for another, but today nobody connects them.</p>
         </div>
         <div class="beat" data-r style="--d:1">
           <h3>What I built</h3>
-          <p>A map of 65 public partners against all twelve labs, with a ranked list of introductions that names the lab which could make each one. AI agents did the research and first pass scoring. Every link goes back to its source.</p>
+          <p>A map of 65 public partner companies across all twelve labs, with a ranked list of introductions and the lab that could make each one. AI agents did the first round of research and scoring, and every claim links back to its source.</p>
         </div>
       </div>
 
@@ -439,7 +439,7 @@
         <h2 id="t-preflight">Preflight</h2>
         <span class="meta">Self initiated, Sep 2026</span>
       </div>
-      <p class="lede" data-r style="--d:1">Before anyone builds a causal model, seven checks say whether the customer&#39;s data can answer the question at all.</p>
+      <p class="lede" data-r style="--d:1">Before a company pays for an analysis, it finds out whether its data can answer the question at all.</p>
 
       <figure class="shot" data-r>
         <img src="assets/preflight.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="Preflight readiness screen: seven checks run before any estimate, each with its result">
@@ -448,11 +448,11 @@
       <div class="beats">
         <div class="beat" data-r>
           <h3>Why it matters</h3>
-          <p>Presage, a CRM startup, checks how much data a prospect has, but not whether that data can show a causal effect. Finding that out after a pilot costs the customer time and trust.</p>
+          <p>Presage, a CRM startup, checks whether a customer has enough data before working with them, but not whether that data can show cause and effect. Finding that out late wastes the customer&#39;s time and trust.</p>
         </div>
         <div class="beat" data-r style="--d:1">
           <h3>What I built</h3>
-          <p>Seven checks in Python and pandas. Each returns green, amber or red with a reason and a remedy, simple enough to verify by hand.</p>
+          <p>Seven simple checks in Python. Each one says green, amber or red, explains why, and says what to fix. A person can check every result by hand.</p>
         </div>
       </div>
 
@@ -470,7 +470,7 @@
         <h2 id="t-opus">The Opus</h2>
         <span class="meta">Hackathon, Jul 2026</span>
       </div>
-      <p class="lede" data-r style="--d:1">Teams find the AI agent their company already has, before they build a new one.</p>
+      <p class="lede" data-r style="--d:1">Teams find the AI tool their company already has, before they build a new one.</p>
 
       <figure class="shot" data-r>
         <img src="assets/the-opus.jpg" width="1200" height="750" loading="lazy" decoding="async" alt="The Opus landing page">
@@ -479,15 +479,15 @@
       <div class="beats">
         <div class="beat" data-r>
           <h3>Why it matters</h3>
-          <p>Inside a company, teams rebuild the same AI tools because nobody knows what already exists. Every rebuild is time and budget spent twice.</p>
+          <p>In big companies, teams build the same AI tools again because nobody knows what already exists. Every rebuild is time and money spent twice.</p>
         </div>
         <div class="beat" data-r style="--d:1">
           <h3>What we built</h3>
-          <p>Describe a need in plain words, get matched to agents that already exist, and run one in a click.</p>
+          <p>You describe what you need in plain words, see the AI tools that already exist for it, and run one with a click.</p>
         </div>
         <div class="beat" data-r style="--d:2">
           <h3>My part</h3>
-          <p>Shaping that flow, and keeping it small enough to ship live overnight. TechOn hackathon at TECH by Handelsblatt, with Jeet Upadhyay and Mehmet Adil Ozturk.</p>
+          <p>Shaping that flow and keeping it small enough to go live in one night. Built at the TechOn hackathon by TECH by Handelsblatt, with Jeet Upadhyay and Mehmet Adil Ozturk.</p>
         </div>
       </div>
 
@@ -508,9 +508,9 @@
             <p class="meta">Startup, since Feb 2026</p>
           </div>
           <div>
-            <p class="one">An edtech startup building an ERP for study abroad consultancies. I run the B2B outreach that brings it to them.</p>
-            <p>A consultancy buys on trust, so every sales call starts from facts I can check. A Python research system prepares each call, with 159 automated tests and every fact linked to its source. When one version failed a release check on 15 fresh accounts, I held it back.</p>
-            <p>After a post mortem of a failed email round, one line first messages got 3 calls from 8, against 0 from 25 emails. People reply to a short, specific first message.</p>
+            <p class="one">An edtech startup building an ERP, the software a study abroad consultancy runs its daily work on. I run the sales outreach that brings it to them.</p>
+            <p>A consultancy buys on trust, so every sales call should start from facts I can check. I built a Python tool that researches each consultancy before the call and links every fact to its source, with 159 automatic tests. When one version failed a quality check on 15 new accounts, I did not release it.</p>
+            <p>When 25 cold emails got 0 calls, I looked at why and switched to short, specific first messages. They got 3 calls from 8. People reply to something short and clearly about them.</p>
             <div class="act">
               <a class="ln" href="https://germanmadeeasy.in/">germanmadeeasy.in<span class="ar" aria-hidden="true">&#8599;</span></a>
             </div>
@@ -523,9 +523,9 @@
             <p class="meta">University, Jul 2026</p>
           </div>
           <div>
-            <p class="one">Why the most accurate forecast was about 8 times more expensive.</p>
-            <p>Across 24 parts and 78 weeks, the most accurate of five methods cost about 8 times more on the test weeks than a less accurate forecast with a safety buffer. Running out of a part costs far more than holding one extra.</p>
-            <p>Programming for Management Studies at TUM, group of five. I led forecasting.</p>
+            <p class="one">Why the most accurate forecast cost about 8 times more.</p>
+            <p>We forecast demand for 24 electric vehicle spare parts over 78 weeks, with five methods. The most accurate one cost about 8 times more than a less accurate forecast with a small safety stock, because running out of a part costs far more than keeping one extra.</p>
+            <p>University group project of five (Programming for Management Studies, TUM). I led the forecasting.</p>
             <div class="act">
               <a class="ln" href="https://github.com/harshilsojitra215-hue/portfolio/blob/main/ev-forecasting/ev_spare_parts_inventory_forecasting.ipynb">Notebook<span class="ar" aria-hidden="true">&#8599;</span></a>
             </div>
@@ -538,7 +538,7 @@
             <p class="meta">Student club, Apr 2026</p>
           </div>
           <div>
-            <p class="one">Operations for a new student investment club: the application form, the semester timetable, and a scoring rubric, so every applicant was judged on the same stated criteria.</p>
+            <p class="one">Operations for a new student investment club. I built the application form, the semester timetable and a scoring rubric, so every applicant was judged on the same criteria.</p>
             <div class="act">
               <a class="ln" href="https://tum-investment-club-heilbronn.netlify.app/">Application form<span class="ar" aria-hidden="true">&#8599;</span></a>
               <a class="ln" href="https://tum-investment-calendar-heilbronn.netlify.app/">Timetable<span class="ar" aria-hidden="true">&#8599;</span></a>
