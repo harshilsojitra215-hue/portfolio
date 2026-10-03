@@ -17,7 +17,6 @@ All three are independent prototypes and are not affiliated with the companies t
 ## Described on the page, code not here
 
 - **VANTAGE**: 1st prize overall, Smart Industry Solutions Hackathon 2026. Live demo on synthetic data: https://vantage-incubator.pages.dev/ (interface by Jeet Upadhyay). Engine code private: team project, and the challenge data belongs to the company.
-- **die wegmeister backend**: company code.
 - **German Made Easy**: holds data about real businesses and people.
 - **The Opus**: live at https://theopus.net/. Team project.
 - **TUM Investment Club**, **EV spare parts forecasting**: club and group work.
